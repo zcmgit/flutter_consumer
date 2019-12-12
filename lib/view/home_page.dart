@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_consumer/viewmodel/banner_provide.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_consumer/viewmodel/store.dart';
+import 'package:flutter_consumer/viewmodel/banner_provide.dart';
 
 //class HomePage extends StatelessWidget {
 //
@@ -25,12 +27,24 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
   final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
-
 }
+
+
 class _MyHomePageState extends State<HomePage> {
+  var provider;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    var provider = Provider.of<BannerProvider>(context);
+    if (provider != this.provider) {
+      this.provider = provider;
+      provider.getBanner("C_INDEX_BANNER");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -39,7 +53,12 @@ class _MyHomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         body: new Column(
           children: <Widget>[
-            new Text("home"),
+            banner()
+//            Store.connect<BannerProvider>(
+//              builder: (BuildContext context,BannerProvider provide,Widget child){
+//                return banner();
+//              },
+//            )
           ],
         ));
   }
@@ -52,9 +71,9 @@ class _MyHomePageState extends State<HomePage> {
     return new Container(
       height: 200,
       padding: EdgeInsets.only(left: 10,top: 0,right: 10,bottom: 0),
-      child: Consumer<CommentProvide>(
-        builder: (context, CommentProvide provide, _) => Swiper(
-          itemCount: imgs.length,
+      child: Consumer<BannerProvider>(
+        builder: (context, BannerProvider provide, _) => Swiper(
+          itemCount: Store.value<BannerProvider>(context).getList.length,
           loop: true,
           autoplay: true,
           duration: 500,

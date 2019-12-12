@@ -5,7 +5,7 @@ import 'package:flutter_consumer/entity/banner_entity.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-class CommentProvide extends ChangeNotifier {
+class BannerProvider extends ChangeNotifier {
   BannerService bannerService = BannerServiceImpl();
 
   BannerEntity _dataArr ;
